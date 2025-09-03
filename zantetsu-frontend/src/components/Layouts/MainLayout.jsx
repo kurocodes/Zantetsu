@@ -8,8 +8,13 @@ import { useEffect } from "react";
 import Sidebar from "./Sidebar";
 
 export default function MainLayout({ children }) {
-  const { showAuthContainer, setShowAuthContainer, showCart, setShowCart, showSidebar } =
-    useGeneralContext();
+  const {
+    showAuthContainer,
+    setShowAuthContainer,
+    showCart,
+    setShowCart,
+    showSidebar,
+  } = useGeneralContext();
 
   useEffect(() => {
     if (showCart || showSidebar) {
@@ -25,8 +30,9 @@ export default function MainLayout({ children }) {
       {children}
       <Footer />
       {showAuthContainer && <AuthContainer />}
-      <AnimatePresence>{showCart && <CartSection />}
-      <Sidebar />
+      <AnimatePresence>
+        {showCart && <CartSection />}
+        {showSidebar && <Sidebar />}
       </AnimatePresence>
     </div>
   );

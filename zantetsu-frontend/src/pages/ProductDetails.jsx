@@ -12,7 +12,7 @@ export default function ProductDetails() {
   const { id } = useParams();
 
   // Dummy product (you’ll replace this later with DB data)
-  const product = products[id];
+  const product = products[id - 1];
 
   const [mainImg, setMainImg] = useState(product.images[0]);
   const [showReviewForm, setShowReviewForm] = useState(false);

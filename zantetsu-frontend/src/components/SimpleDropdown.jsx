@@ -39,7 +39,7 @@ const DropdownMenu = ({ children, trigger, isOpen, setIsOpen }) => {
     </div>
   );
 };
-const DropdownMenuItem = ({ children, onClick }) => (
+export const DropdownMenuItem = ({ children, onClick }) => (
   <a
     href="#"
     onClick={(e) => {
@@ -56,7 +56,7 @@ const DropdownMenuItem = ({ children, onClick }) => (
 const DropdownMenuSeparator = () => (
   <div className="my-1 h-px bg-zinc-200 dark:bg-zinc-700" />
 );
-export default function SimpleDropdown() {
+export default function SimpleDropdown({ style }) {
 
   const { navigate } = useGeneralContext();
 

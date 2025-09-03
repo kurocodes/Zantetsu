@@ -5,9 +5,10 @@ import SimpleDropdown from "../SimpleDropdown";
 import { AnimatePresence, motion } from "motion/react";
 import { useGeneralContext } from "../../context/GeneralContext";
 import { NavLink } from "react-router-dom";
+import { NavItem } from "./NavItem";
 
 export default function Navbar() {
-  const { showAuthContainer, setShowAuthContainer, navigate, setShowCart } =
+  const { showAuthContainer, setShowAuthContainer, navigate, setShowCart, showSidebar, setShowSidebar } =
     useGeneralContext();
 
   const [showSearch, setShowSearch] = useState(false);
@@ -22,7 +23,7 @@ export default function Navbar() {
             <NavItem key={index} {...item} action="/products" />
           ))}
         </div>
-        <div className="lg:hidden">
+        <div className="lg:hidden" onClick={() => setShowSidebar(!showSidebar)}>
           <icons.HiMenuAlt1 className={iconStyle} />
         </div>
       </div>
@@ -62,17 +63,6 @@ export default function Navbar() {
         <icons.LuShoppingCart className={iconStyle} onClick={() => setShowCart(true)} />
       </div>
     </div>
-  );
-}
-
-function NavItem({ label, Icon, action }) {
-  return (
-    <NavLink to={action}>
-      <div className="flex items-center cursor-pointer hover:text-highlight transition-colors duration-300">
-        <span>{label}</span>
-        {Icon && <Icon className="text-xl mt-[3px] ml-1" />}
-      </div>
-    </NavLink>
   );
 }
 
