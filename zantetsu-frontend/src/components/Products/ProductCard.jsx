@@ -25,7 +25,7 @@ export default function ProductCard({
         />
 
         {/* Carousel nav buttons */}
-        <div className="absolute w-full flex justify-between top-1/2 px-5 pointer-events-none">
+        <div className="absolute w-full flex justify-between top-1/2 px-5">
           <ImageNavBtn
             style={`${imgNavBtnStyle} -translate-x-20`}
             action={() =>

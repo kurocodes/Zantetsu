@@ -5,7 +5,14 @@ import asyncHandler from "express-async-handler";
 // @route  GET /api/products
 // @access Public
 export const getProducts = asyncHandler(async (req, res) => {
-  const { productType, anime, minPrice, maxPrice } = req.query;
+  const {
+    productType,
+    anime,
+    minPrice,
+    maxPrice,
+    page = 1,
+    limit = 20,
+  } = req.query;
 
   let filter = {};
 
@@ -23,11 +30,29 @@ export const getProducts = asyncHandler(async (req, res) => {
     if (maxPrice) filter.price.$lte = Number(maxPrice);
   }
 
-  const products = await Product.find(filter);
+  // Calculate pagination values
+  const currentPage = Math.max(1, parseInt(page));
+  const productsPerPage = Math.max(1, parseInt(limit));
+  const skip = (currentPage - 1) * productsPerPage;
+
+  // get total counts of products (for pagination info)
+  const totalProducts = await Product.countDocuments(filter);
+
+  // get paginated products
+  const products = await Product.find(filter).skip(skip).limit(productsPerPage);
+
+  // calculate total pages
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
 
   res.status(200).json({
     message: "Products fetched successfully",
     count: products.length,
+    totalProducts,
+    currentPage,
+    totalPages,
+    hasNextPage: currentPage < totalPages,
+    hasPreviousPage: currentPage > 1,
+    productsPerPage,
     products,
   });
 });

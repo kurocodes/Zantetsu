@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import connectTODB from "./config/db.js";
 import productRoutes from "./Routes/ProductsRoute.js";
 
@@ -8,6 +9,7 @@ connectTODB();
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
