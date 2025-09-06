@@ -1,9 +1,27 @@
 import { useState } from "react";
 import { icons } from "../../assets/assets";
 import { AnimatePresence, motion } from "motion/react";
+import { useFilters } from "../../context/FiltersContext";
 
-export function Filter({ label, options }) {
+export function Filter({ label, filterKey, options }) {
+  const { filters, setFilters } = useFilters();
+
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleChange = (option) => {
+    setFilters((prev) => {
+      const prevValues = prev[filterKey] || [];
+      const newValues = prevValues.includes(option)
+        ? prevValues.filter((v) => v !== option)
+        : [...prevValues, option];
+
+      return {
+        ...prev,
+        [filterKey]: newValues,
+        page: 1,
+      };
+    });
+  };
 
   return (
     <div className="py-2 border-t-2 border-bgMuted">
@@ -45,7 +63,12 @@ export function Filter({ label, options }) {
               >
                 <label className="relative flex items-center gap-2 cursor-pointer">
                   <div className="rounded bg-bgMuted">
-                    <input type="checkbox" className="peer sr-only" />
+                    <input
+                      type="checkbox"
+                      checked={filters[filterKey]?.includes(option) || false}
+                      onChange={() => handleChange(option)}
+                      className="peer sr-only"
+                    />
 
                     <span className="w-4 h-4 flex items-center justify-center rounded peer-checked:bg-accentGold opacity-0 peer-checked:opacity-100 transition-all duration-200">
                       {/* Tick */}

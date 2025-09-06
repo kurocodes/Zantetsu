@@ -8,8 +8,12 @@ import FAQs from "../components/Common/FAQs";
 import Testimonials from "../components/Common/Testimonials";
 import Services from "../components/Common/Services";
 import ProductSection from "../components/Products/ProductSection";
+import { useHomeProducts } from "../hooks/useProducts";
 
 export default function Home() {
+
+  const { data, isLoading, isError } = useHomeProducts();
+
   return (
     <div className="relative">
       <Hero />
@@ -37,8 +41,8 @@ export default function Home() {
         <ShortIntro />
         {/* Products Sections */}
         <div className="px-6 py-10 pt-20 space-y-14">
-          <ProductSection title="Latest Drops" products={latestProducts} />
-          <ProductSection title="Most Popular" products={mostPopularProducts} />
+          {!isLoading && !isError && <ProductSection title="Latest Drops" products={data.latest} />}
+          {!isLoading && !isError && <ProductSection title="Most Popular" products={data.popular} />}
         </div>
         <Services /> {/* Trust & Service Section */}
         <Testimonials />

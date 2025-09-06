@@ -14,10 +14,12 @@ export default function FilterSection() {
       <div className="flex flex-col">
         <Filter
           label="Category"
-          options={["Action Figures", "Keychains", "Katanas", "Posters"]}
+          filterKey="productType"
+          options={["Action Figure", "Keychain", "Katana", "Poster"]}
         />
         <Filter
           label="Anime"
+          filterKey="anime"
           options={[
             "Naruto",
             "Bleach",

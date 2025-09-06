@@ -17,11 +17,13 @@ export const getProducts = asyncHandler(async (req, res) => {
   let filter = {};
 
   if (productType) {
-    filter.productType = productType;
+    filter.productType = Array.isArray(productType)
+      ? { $in: productType }
+      : { $in: [productType] };
   }
 
   if (anime) {
-    filter.anime = anime;
+    filter.anime = Array.isArray(anime) ? { $in: anime } : { $in: [anime] };
   }
 
   if (minPrice || maxPrice) {
@@ -34,6 +36,8 @@ export const getProducts = asyncHandler(async (req, res) => {
   const currentPage = Math.max(1, parseInt(page));
   const productsPerPage = Math.max(1, parseInt(limit));
   const skip = (currentPage - 1) * productsPerPage;
+
+  console.log(filter);
 
   // get total counts of products (for pagination info)
   const totalProducts = await Product.countDocuments(filter);
