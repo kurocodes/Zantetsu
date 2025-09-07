@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { icons } from "../../assets/assets";
 import { AnimatePresence, motion } from "motion/react";
+import { useFilters } from "../../context/FiltersContext";
 
 export function SortFilter() {
   const [isOpen, setIsOpen] = useState(false);
-  const options = [
-    "Price: Low → High",
-    "Price: High → Low",
-    "Name: A → Z",
-    "Name: Z → A",
+  const { filters, setFilters } = useFilters();
+
+   const options = [
+    { label: "Price: Low → High", value: "price-asc" },
+    { label: "Price: High → Low", value: "price-desc" },
+    { label: "Name: A → Z", value: "name-asc" },
+    { label: "Name: Z → A", value: "name-desc" },
   ];
-  const [selected, setSelected] = useState(options[0]);
 
   return (
     <div className="py-2 border-t-2 border-bgMuted">
@@ -42,15 +44,18 @@ export function SortFilter() {
             className="overflow-hidden"
           >
             <div className="flex flex-col gap-2">
-              {options.map((option, index) => (
+              {options.map((option) => (
                 <button
-                  key={index}
+                  key={option.value}
                   className={`text-left px-2 py-1 rounded hover:bg-bgMuted transition-colors duration-200 ${
-                    selected === option ? "bg-bgMuted text-accentGold" : ""
+                    filters.sort === option.value ? "bg-bgMuted text-accentGold" : ""
                   }`}
-                  onClick={() => setSelected(option)}
+                  onClick={() => setFilters((prev) => ({
+                    ...prev,
+                    sort: option.value
+                  }))}
                 >
-                  {option}
+                  {option.label}
                 </button>
               ))}
             </div>

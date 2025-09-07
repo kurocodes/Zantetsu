@@ -1,11 +1,32 @@
 import { useState } from "react";
 import { icons } from "../../assets/assets";
 import { AnimatePresence, motion } from "motion/react";
+import { useFilters } from "../../context/FiltersContext";
+import { useEffect } from "react";
 
 export function PriceFilter() {
   const [isOpen, setIsOpen] = useState(false);
-  const [minPrice, setMinPrice] = useState(500);
-  const [maxPrice, setMaxPrice] = useState(3000);
+
+  const { filters, setFilters } = useFilters();
+
+  const [minInput, setMinInput] = useState(filters.minPrice?.toString() || "");
+  const [maxInput, setMaxInput] = useState(filters.maxPrice?.toString() || "");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const min = minInput === "" ? null : Math.max(0, Number(minInput));
+      const max = maxInput === "" ? null : Math.max(0, Number(maxInput));
+
+      setFilters((prev) => ({
+        ...prev,
+        minPrice: min,
+        maxPrice: max,
+        page: 1,
+      }));
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [minInput, maxInput, setFilters]);
 
   return (
     <div className="py-2 border-t-2 border-bgMuted">
@@ -43,8 +64,8 @@ export function PriceFilter() {
                 <label className="text-sm">From: </label>
                 <input
                   type="number"
-                  value={minPrice}
-                  onChange={(e) => setMinPrice(Number(e.target.value))}
+                  value={minInput}
+                  onChange={(e) => setMinInput(e.target.value)}
                   className="p-2 rounded-md border border-bgMuted bg-bgSoft text-bgLight focus:outline-none focus:border-accentGold"
                 />
               </div>
@@ -54,8 +75,8 @@ export function PriceFilter() {
                 <label className="text-sm">To:</label>
                 <input
                   type="number"
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(Number(e.target.value))}
+                  value={maxInput}
+                  onChange={(e) => setMaxInput(e.target.value)}
                   className="p-2 rounded-md border border-bgMuted bg-bgSoft text-bgLight focus:outline-none focus:border-accentGold"
                 />
               </div>

@@ -3,7 +3,7 @@ import { Filter } from "./Filter";
 import { PriceFilter } from "./PriceFilter";
 import { SortFilter } from "./SortFilter";
 
-export default function FilterSection() {
+export default function FilterSection({ productCount }) {
   return (
     <aside className="hidden sticky top-20 self-start lg:flex flex-col text-bgLight">
       <div className="flex items-center gap-2 py-4">
@@ -35,7 +35,7 @@ export default function FilterSection() {
         <div className="group flex items-center justify-between gap-2 py-4 border-t-2 border-bgMuted cursor-pointer">
           <span>Number of Products</span>
           <span className="bg-accentGold text-bgDark font-medium px-2 rounded-full">
-            0
+            {productCount}
           </span>
         </div>
       </div>

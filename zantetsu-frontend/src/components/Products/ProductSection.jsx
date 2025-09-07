@@ -9,7 +9,7 @@ export default function ProductSection({ title, products }) {
       <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-6">
         {products.map((product) => (
           <ProductCard
-            key={product.id}
+            key={product._id}
             id={product.id}
             images={product.images}
             title={product.title}

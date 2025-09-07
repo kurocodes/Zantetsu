@@ -37,8 +37,6 @@ export const getProducts = asyncHandler(async (req, res) => {
   const productsPerPage = Math.max(1, parseInt(limit));
   const skip = (currentPage - 1) * productsPerPage;
 
-  console.log(filter);
-
   // get total counts of products (for pagination info)
   const totalProducts = await Product.countDocuments(filter);
 
