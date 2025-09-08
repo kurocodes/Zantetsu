@@ -1,5 +1,4 @@
 import { categories } from "../utils/data";
-import { latestProducts, mostPopularProducts } from "../assets/products";
 import CategoryCard from "../components/CategoryCard";
 import Hero from "../components/Hero/Hero";
 import ShortIntro from "../components/ShortIntro";
@@ -11,7 +10,6 @@ import ProductSection from "../components/Products/ProductSection";
 import { useHomeProducts } from "../hooks/useProducts";
 
 export default function Home() {
-
   const { data, isLoading, isError } = useHomeProducts();
 
   return (
@@ -41,8 +39,20 @@ export default function Home() {
         <ShortIntro />
         {/* Products Sections */}
         <div className="px-6 py-10 pt-20 space-y-14">
-          {!isLoading && !isError && <ProductSection title="Latest Drops" products={data.latest} />}
-          {!isLoading && !isError && <ProductSection title="Most Popular" products={data.popular} />}
+          {!isLoading && !isError && (
+            <ProductSection
+              title="Latest Drops"
+              products={data.latest}
+              isLoading={isLoading}
+            />
+          )}
+          {!isLoading && !isError && (
+            <ProductSection
+              title="Most Popular"
+              products={data.popular}
+              isLoading={isLoading}
+            />
+          )}
         </div>
         <Services /> {/* Trust & Service Section */}
         <Testimonials />
