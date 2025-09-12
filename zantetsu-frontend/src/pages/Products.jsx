@@ -1,15 +1,19 @@
-import ProductCard from "../components/Products/ProductCard";
 import FilterSection from "../components/Products/FilterSection";
 import { useProducts } from "../hooks/useProducts";
 import { FilterProvider, useFilters } from "../context/FiltersContext";
-import { ProductCardSkeleton } from "../components/Loaders/ProductCardSkeleton";
+import PageNavigation from "../components/Products/PageNavigation";
+import ProductsContainer from "../components/Products/ProductsContainer";
 import { icons } from "../assets/assets";
 
 function ProductsContent() {
-  const { filters, setFilters } = useFilters();
+  const { filters, setFilters, filterDrawerOpen, setFilterDrawerOpen } =
+    useFilters();
   const { data, isLoading, isError } = useProducts(filters);
-  console.log(data);
   const products = data?.products || [];
+
+  const hasPreviousPage = data?.hasPreviousPage || false;
+  const hasNextPage = data?.hasNextPage || false;
+  const currentPage = data?.currentPage || 1;
 
   const sortedProducts = [...products].sort((a, b) => {
     switch (filters.sort) {
@@ -34,87 +38,56 @@ function ProductsContent() {
   };
 
   return (
-    <div className="px-10 py-16 border-b border-bgMuted">
-      {/* Heading */}
-      <h1 className="text-4xl font-heading text-highlight text-center mb-10">
-        All Products
-      </h1>
+    <>
+      <div className="px-10 py-16 border-b border-bgMuted">
+        {/* Heading */}
+        <h1 className="text-4xl font-heading text-highlight text-center mb-10">
+          All Products
+        </h1>
 
-      <div className="grid lg:grid-cols-[220px_1fr] gap-10">
-        {/* Sidebar - Filter and Sort */}
-        <FilterSection
-          productCount={isLoading && isError ? 0 : sortedProducts?.length}
-        />
+        <div className="grid md:grid-cols-[220px_1fr] gap-10">
+          {/* Sidebar - Filter and Sort */}
+          <FilterSection
+            productCount={isLoading && isError ? 0 : sortedProducts?.length}
+          />
 
-        {/* Products */}
-        <div>
-          <div className="grid grid-cols-1 xs:grid-cols-2 xl:grid-cols-4 gap-6">
-            {isLoading ? (
-              Array.from({ length: 8 }).map((_, index) => (
-                <ProductCardSkeleton key={index} imgHeight="h-50" />
-              ))
-            ) : isError ? (
-              <p>Error fetching products</p>
-            ) : (
-              sortedProducts.map((product) => (
-                <ProductCard
-                  key={product._id}
-                  id={product.id}
-                  images={product.images}
-                  title={product.name}
-                  discountedPrice={product.discountedPrice}
-                  price={product.price}
+          <span
+            className="md:hidden fixed z-10 bottom-0 right-0 -translate-[50%] text-white bg-highlight w-fit p-4 rounded-full"
+            onClick={() => setFilterDrawerOpen(true)}
+          >
+            <icons.FilterIcon />
+          </span>
+
+          {/* Products */}
+          <div>
+            <ProductsContainer
+              sortedProducts={sortedProducts}
+              isLoading={isLoading}
+              isError={isError}
+            />
+
+            {/* Page naviagation */}
+            {!isLoading &&
+              sortedProducts?.length > 0 &&
+              !(data?.currentPage === 1 && data?.hasNextPage === false) && (
+                <PageNavigation
+                  hasPreviousPage={hasPreviousPage}
+                  hasNextPage={hasNextPage}
+                  currentPage={currentPage}
+                  handlePageChange={handlePageChange}
                 />
-              ))
-            )}
-          </div>
-
-          {/* Page naviagation */}
-          <div className="flex justify-between items-center mt-5">
-            {/* Previous Page */}
-            {data?.hasPreviousPage ? (
-              <button
-                className="group bg-accentGold text-2xl p-2 rounded-lg hover:bg-highlight hover:text-bgLight transition duration-200 cursor-pointer"
-                onClick={() => handlePageChange(-1)}
-              >
-                <icons.IoIosArrowBack className="group-hover:scale-120 transition-all duration-200" />
-              </button>
-            ) : (
-              <div />
-            )}
-
-            {/* Page Numbers */}
-            <div className="space-x-2">
-              {data?.hasPreviousPage && (
-                <span className="bg-bgMuted text-white px-3 py-[6px] leading-none rounded-full">
-                  {data.currentPage - 1}
-                </span>
               )}
-              <span className="font-bold bg-highlight text-white px-3 py-[6px] leading-none rounded-full">
-                {data?.currentPage || 1}
-              </span>
-              {data?.hasNextPage && (
-                <span className="bg-bgMuted text-white px-3 py-[6px] leading-none rounded-full">
-                  {data.currentPage + 1}
-                </span>
-              )}
-            </div>
-
-            {/* Next Page */}
-            {data?.hasNextPage ? (
-              <button
-                className="group bg-accentGold text-2xl p-2 rounded-lg hover:bg-highlight hover:text-bgLight transition duration-200 cursor-pointer"
-                onClick={() => handlePageChange(1)}
-              >
-                <icons.IoIosArrowForward className="group-hover:scale-120 transition-all duration-200" />
-              </button>
-            ) : (
-              <div />
-            )}
           </div>
         </div>
       </div>
-    </div>
+
+      <FilterSection
+        productCount={isLoading && isError ? 0 : sortedProducts?.length}
+        isDrawer
+        animate={{ y: filterDrawerOpen ? 0 : "100%" }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      />
+    </>
   );
 }
 

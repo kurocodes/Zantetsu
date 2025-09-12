@@ -19,7 +19,8 @@ const cleanFilters = (filters) => {
 export const useProducts = (filters) => {
   return useQuery({
     queryKey: ["products", filters],
-    queryFn: () => productApi.getProducts(cleanFilters(filters)).then((res) => res.data),
+    queryFn: () =>
+      productApi.getProducts(cleanFilters(filters)).then((res) => res.data),
     keepPreviousData: true,
   });
 };
@@ -28,5 +29,12 @@ export const useHomeProducts = () => {
   return useQuery({
     queryKey: ["homeProducts"],
     queryFn: () => productApi.getHomeProducts().then((res) => res.data),
+  });
+};
+
+export const useProductDetails = (productId) => {
+  return useQuery({
+    queryKey: ["productDetails", productId],
+    queryFn: () => productApi.getProductDetails(productId).then((res) => res.data),
   });
 };

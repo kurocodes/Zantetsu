@@ -2,13 +2,13 @@ import { catergoryImages, icons } from "../assets/assets";
 
 export const navItems = [
   {
-    label: "Katanas",
+    label: "Katana",
   },
   {
-    label: "Keychains",
+    label: "Keychain",
   },
   {
-    label: "Posters",
+    label: "Poster",
   },
 ];
 

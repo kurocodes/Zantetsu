@@ -6,6 +6,8 @@ const FiltersContext = createContext();
 export const FilterProvider = ({ children }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
+
   const defaultFilters = {
     productType: [],
     anime: [],
@@ -47,7 +49,7 @@ export const FilterProvider = ({ children }) => {
   }, [filters, searchParams]);
 
   return (
-    <FiltersContext.Provider value={{ filters, setFilters }}>
+    <FiltersContext.Provider value={{ filters, setFilters, filterDrawerOpen, setFilterDrawerOpen }}>
       {children}
     </FiltersContext.Provider>
   );

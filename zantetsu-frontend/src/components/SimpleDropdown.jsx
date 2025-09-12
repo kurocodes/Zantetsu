@@ -57,7 +57,6 @@ const DropdownMenuSeparator = () => (
   <div className="my-1 h-px bg-zinc-200 dark:bg-zinc-700" />
 );
 export default function SimpleDropdown({ style }) {
-
   const { navigate } = useGeneralContext();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -70,23 +69,52 @@ export default function SimpleDropdown({ style }) {
         trigger={
           <button className="flex items-center gap-2 cursor-pointer hover:text-highlight">
             <span>Action Figures</span>
-            <icons.IoIosArrowDown className={`mt-[2px] ${isOpen ? "rotate-180" : ""} transition-all duration-300`} />
+            <icons.IoIosArrowDown
+              className={`mt-[2px] ${
+                isOpen ? "rotate-180" : ""
+              } transition-all duration-300`}
+            />
           </button>
         }
       >
-        <DropdownMenuItem onClick={() => {navigate("/products"); setIsOpen(false)}}>
+        <DropdownMenuItem
+          onClick={() => {
+            navigate("/products?anime=Naruto");
+            setIsOpen(false);
+          }}
+        >
           Naruto
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => {navigate("/products"); setIsOpen(false)}}>
+        <DropdownMenuItem
+          onClick={() => {
+            navigate("/products?productType=Action Figure&anime=One Piece");
+            setIsOpen(false);
+          }}
+        >
           One Piece
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => {navigate("/products"); setIsOpen(false)}}>
+        <DropdownMenuItem
+          onClick={() => {
+            navigate("/products?productType=Action Figure&anime=Bleach");
+            setIsOpen(false);
+          }}
+        >
           Bleach
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => {navigate("/products"); setIsOpen(false)}}>
+        <DropdownMenuItem
+          onClick={() => {
+            navigate("/products?productType=Action Figure&anime=Dragon Ball Z");
+            setIsOpen(false);
+          }}
+        >
           Dragon Ball Z
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => {navigate("/products"); setIsOpen(false)}}>
+        <DropdownMenuItem
+          onClick={() => {
+            navigate("/products?productType=Action Figure&anime=Demon Slayer");
+            setIsOpen(false);
+          }}
+        >
           Demon Slayer
         </DropdownMenuItem>
       </DropdownMenu>

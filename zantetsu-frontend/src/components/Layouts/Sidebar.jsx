@@ -40,11 +40,11 @@ export default function Sidebar() {
 
             {isOpen && (
               <div className="absolute w-full px-5 py-2 rounded-lg shadow-lg bg-bgMuted text-bgLight z-50 animate-in fade-in-0 zoom-in-95 flex flex-col gap-2">
-                <div onClick={() => setShowSidebar(false)}><NavLink to="/products">One Piece</NavLink></div>
-                <div onClick={() => setShowSidebar(false)}><NavLink to="/products">Naruto</NavLink></div>
-                <div onClick={() => setShowSidebar(false)}><NavLink to="/products">Bleach</NavLink></div>
-                <div onClick={() => setShowSidebar(false)}><NavLink to="/products">Dragon Ball Z</NavLink></div>
-                <div onClick={() => setShowSidebar(false)}><NavLink to="/products">Demon Slayer</NavLink></div>
+                <div onClick={() => setShowSidebar(false)}><NavLink to="/products?productType=Action Figure&anime=One Piece">One Piece</NavLink></div>
+                <div onClick={() => setShowSidebar(false)}><NavLink to="/products?productType=Action Figure&anime=Naruto">Naruto</NavLink></div>
+                <div onClick={() => setShowSidebar(false)}><NavLink to="/products?productType=Action Figure&anime=Bleach">Bleach</NavLink></div>
+                <div onClick={() => setShowSidebar(false)}><NavLink to="/products?productType=Action Figure&anime=Dragon Ball Z">Dragon Ball Z</NavLink></div>
+                <div onClick={() => setShowSidebar(false)}><NavLink to="/products?productType=Action Figure&anime=Demon Slayer">Demon Slayer</NavLink></div>
               </div>
             )}
           </div>
@@ -53,7 +53,7 @@ export default function Sidebar() {
               key={index}
               {...item}
               Icon={icons.IoIosArrowForward}
-              action="/products"
+              action={`/products?productType=${item.label}`}
               onClick={() => setShowSidebar(false)}
               style={"p-4 border-b border-bgMuted w-full justify-between"}
             />

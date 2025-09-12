@@ -14,9 +14,9 @@ export default function ProductCard({
   const { navigate } = useGeneralContext();
 
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer font-body">
+    <div className="rounded-2xl shadow-md overflow-hidden cursor-pointer font-body">
       {/* Image carousel */}
-      <div className="group relative w-full overflow-hidden flex">
+      <div className="group relative w-full overflow-hidden rounded-t-2xl flex">
         <img
           src={images[imgIdx]}
           alt={`Product Image ${imgIdx}`}
@@ -44,8 +44,8 @@ export default function ProductCard({
       </div>
 
       {/* Product details */}
-      <div className="p-3">
-        <h3 className="text-lg font-semibold text-gray-800 truncate hover:text-highlight transition-colors duration-200" onClick={() => navigate(`/products/${id}`)}>
+      <div className="bg-white p-3">
+        <h3 className="text-sm sm:text-lg sm:font-semibold text-gray-800 truncate hover:text-highlight transition-colors duration-200" onClick={() => navigate(`/products/${id}`)}>
           {title}
         </h3>
         <div className="flex gap-2">
@@ -55,10 +55,10 @@ export default function ProductCard({
 
         {/* Action buttons */}
         <div className="flex items-center gap-2 mt-3">
-          <button className="flex gap-2 items-center bg-bgMuted text-bgLight rounded-lg p-[10px] cursor-pointer hover:bg-highlight transition-colors duration-300">
+          <button className="flex gap-2 items-center bg-bgMuted text-bgLight max-sm:text-sm rounded-lg p-[9px] sm:p-[10px] cursor-pointer hover:bg-highlight transition-colors duration-300">
             <icons.FaRegEye />
           </button>
-          <button className="flex-1 bg-highlight text-white py-1.5 rounded-lg cursor-pointer hover:bg-accentGold hover:text-bgMuted transition">
+          <button className="flex-1 bg-highlight text-white max-sm:text-sm py-1.5 rounded-lg cursor-pointer hover:bg-accentGold hover:text-bgMuted transition">
             Add to Cart
           </button>
         </div>

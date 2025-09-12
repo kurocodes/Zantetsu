@@ -2,9 +2,7 @@ import { useState } from "react";
 import { assets, icons } from "../../assets/assets";
 import { navItems } from "../../utils/data";
 import SimpleDropdown from "../SimpleDropdown";
-import { AnimatePresence, motion } from "motion/react";
 import { useGeneralContext } from "../../context/GeneralContext";
-import { NavLink } from "react-router-dom";
 import { NavItem } from "./NavItem";
 
 export default function Navbar() {
@@ -20,7 +18,7 @@ export default function Navbar() {
         <div className="hidden lg:flex gap-4">
           <SimpleDropdown />
           {navItems.map((item, index) => (
-            <NavItem key={index} {...item} action="/products" />
+            <NavItem key={index} {...item} action={`/products?productType=${item.label}`} />
           ))}
         </div>
         <div className="lg:hidden" onClick={() => setShowSidebar(!showSidebar)}>
@@ -39,23 +37,6 @@ export default function Navbar() {
       </div>
 
       <div className="sm:flex-1 flex gap-4 justify-end items-center">
-        <AnimatePresence initial={false}>
-          {showSearch && (
-            <motion.input
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 200, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              type="text"
-              placeholder="Search..."
-              className="ps-4 pe-2 py-2 text-sm rounded-full border-2 border-highlight focus:outline-none"
-            />
-          )}
-        </AnimatePresence>
-        <icons.IoSearch
-          className={`${iconStyle} ${showSearch ? "text-highlight" : ""}`}
-          onClick={() => setShowSearch((prev) => !prev)}
-        />
         <icons.RiAccountCircleLine
           className={iconStyle}
           onClick={() => setShowAuthContainer(!showAuthContainer)}
