@@ -6,15 +6,11 @@ import Footer from "./Footer";
 import Navbar from "./Navbar";
 import { useEffect } from "react";
 import Sidebar from "./Sidebar";
+import { useAuthContext } from "../../context/AuthContext";
 
 export default function MainLayout({ children }) {
-  const {
-    showAuthContainer,
-    setShowAuthContainer,
-    showCart,
-    setShowCart,
-    showSidebar,
-  } = useGeneralContext();
+  const { showCart, showSidebar } = useGeneralContext();
+  const { showAuthContainer } = useAuthContext();
 
   useEffect(() => {
     if (showCart || showSidebar) {

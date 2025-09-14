@@ -4,12 +4,14 @@ import { navItems } from "../../utils/data";
 import SimpleDropdown from "../SimpleDropdown";
 import { useGeneralContext } from "../../context/GeneralContext";
 import { NavItem } from "./NavItem";
+import { useAuthContext } from "../../context/AuthContext";
+import { useLogout } from "../../hooks/useAuth";
 
 export default function Navbar() {
-  const { showAuthContainer, setShowAuthContainer, navigate, setShowCart, showSidebar, setShowSidebar } =
+  const { showAuthContainer, setShowAuthContainer, user } = useAuthContext();
+  const { mutate: logout, isLoading, isError } = useLogout();
+  const { navigate, setShowCart, showSidebar, setShowSidebar } =
     useGeneralContext();
-
-  const [showSearch, setShowSearch] = useState(false);
 
   return (
     <div className="sticky top-0 z-1 flex items-center max-sm:justify-between bg-bgLight px-4 shadow">
@@ -18,7 +20,11 @@ export default function Navbar() {
         <div className="hidden lg:flex gap-4">
           <SimpleDropdown />
           {navItems.map((item, index) => (
-            <NavItem key={index} {...item} action={`/products?productType=${item.label}`} />
+            <NavItem
+              key={index}
+              {...item}
+              action={`/products?productType=${item.label}`}
+            />
           ))}
         </div>
         <div className="lg:hidden" onClick={() => setShowSidebar(!showSidebar)}>
@@ -37,11 +43,18 @@ export default function Navbar() {
       </div>
 
       <div className="sm:flex-1 flex gap-4 justify-end items-center">
-        <icons.RiAccountCircleLine
+        {user ? (
+          <button onClick={() => logout()}>Logout</button>
+        ) : (
+          <icons.RiAccountCircleLine
+            className={iconStyle}
+            onClick={() => setShowAuthContainer(!showAuthContainer)}
+          />
+        )}
+        <icons.LuShoppingCart
           className={iconStyle}
-          onClick={() => setShowAuthContainer(!showAuthContainer)}
+          onClick={() => setShowCart(true)}
         />
-        <icons.LuShoppingCart className={iconStyle} onClick={() => setShowCart(true)} />
       </div>
     </div>
   );

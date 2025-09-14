@@ -90,6 +90,10 @@ export const getHomeProducts = asyncHandler(async (req, res) => {
   });
 });
 
+
+// @desc Fetch product details
+// @route GET /api/products/:productId
+// @access Public
 export const getProductDetails = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const product = await Product.findById(productId);

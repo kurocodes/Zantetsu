@@ -1,9 +1,10 @@
-"use client";
 import { useState } from "react";
-import { useGeneralContext } from "../../context/GeneralContext";
+import { LoginForm } from "../Auth/LoginForm";
+import { SignUpForm } from "../Auth/SignupForm";
+import { useAuthContext } from "../../context/AuthContext";
 
 export default function AuthContainer() {
-  const { showAuthContainer, setShowAuthContainer } = useGeneralContext();
+  const { setShowAuthContainer } = useAuthContext();
 
   const [activeTab, setActiveTab] = useState("login");
 
@@ -69,53 +70,5 @@ export default function AuthContainer() {
   );
 }
 
-function LoginForm() {
-  return (
-    <form className="flex flex-col gap-4 font-body">
-      <input
-        type="email"
-        placeholder="Email"
-        className="w-full px-4 py-2 rounded-lg bg-bgSoft text-white outline-none border border-gray-600 focus:border-color-accentGold"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        className="w-full px-4 py-2 rounded-lg bg-bgSoft text-white outline-none border border-gray-600 focus:border-color-accentGold"
-      />
-      <button
-        type="submit"
-        className="w-full py-2 rounded-lg bg-highlight font-heading tracking-wide hover:opacity-90 transition"
-      >
-        Login
-      </button>
-    </form>
-  );
-}
 
-function SignUpForm() {
-  return (
-    <form className="flex flex-col gap-4 font-body">
-      <input
-        type="text"
-        placeholder="Username"
-        className="w-full px-4 py-2 rounded-lg bg-bgSoft text-white outline-none border border-gray-600 focus:border-color-accentGold"
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        className="w-full px-4 py-2 rounded-lg bg-bgSoft text-white outline-none border border-gray-600 focus:border-color-accentGold"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        className="w-full px-4 py-2 rounded-lg bg-bgSoft text-white outline-none border border-gray-600 focus:border-color-accentGold"
-      />
-      <button
-        type="submit"
-        className="w-full py-2 rounded-lg bg-highlight font-heading tracking-wide hover:opacity-90 transition"
-      >
-        Sign Up
-      </button>
-    </form>
-  );
-}
+
