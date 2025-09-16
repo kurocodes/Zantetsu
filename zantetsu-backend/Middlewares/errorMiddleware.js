@@ -1,10 +1,10 @@
 export const errorHandler = (err, req, res, next) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
 
-  //   if (statusCode >= 500) {
-  //     console.error(err.stack);
-  //   }
-  console.error(err);
+  if (statusCode >= 500) {
+    console.error(err.stack);
+  }
+  // console.error(err);
 
   res.status(statusCode);
   res.json({

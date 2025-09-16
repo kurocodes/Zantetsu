@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { assets, icons } from "../../assets/assets";
 import { navItems } from "../../utils/data";
 import SimpleDropdown from "../SimpleDropdown";
@@ -6,6 +5,7 @@ import { useGeneralContext } from "../../context/GeneralContext";
 import { NavItem } from "./NavItem";
 import { useAuthContext } from "../../context/AuthContext";
 import { useLogout } from "../../hooks/useAuth";
+import { Bounce, toast } from "react-toastify";
 
 export default function Navbar() {
   const { showAuthContainer, setShowAuthContainer, user } = useAuthContext();
@@ -44,7 +44,25 @@ export default function Navbar() {
 
       <div className="sm:flex-1 flex gap-4 justify-end items-center">
         {user ? (
-          <button onClick={() => logout()}>Logout</button>
+          <button
+            onClick={() => {
+              logout();
+              toast.success("Logout successful", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+              });
+            }}
+            className="font-subheading px-2 py-1 rounded-md cursor-pointer hover:bg-highlight hover:text-bgLight"
+          >
+            Logout
+          </button>
         ) : (
           <icons.RiAccountCircleLine
             className={iconStyle}

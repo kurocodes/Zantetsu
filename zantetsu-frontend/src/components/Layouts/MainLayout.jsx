@@ -7,6 +7,7 @@ import Navbar from "./Navbar";
 import { useEffect } from "react";
 import Sidebar from "./Sidebar";
 import { useAuthContext } from "../../context/AuthContext";
+import { ToastContainer } from "react-toastify";
 
 export default function MainLayout({ children }) {
   const { showCart, showSidebar } = useGeneralContext();
@@ -30,6 +31,7 @@ export default function MainLayout({ children }) {
         {showCart && <CartSection />}
         {showSidebar && <Sidebar />}
       </AnimatePresence>
+      <ToastContainer />
     </div>
   );
 }

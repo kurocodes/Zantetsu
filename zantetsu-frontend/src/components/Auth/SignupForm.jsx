@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "../../lib/validation/authSchemas";
 import { useRegister } from "../../hooks/useAuth";
 import { useAuthContext } from "../../context/AuthContext";
+import { BeatLoader } from "react-spinners";
 
 export function SignUpForm() {
   const { mutate: signup, isPending, error } = useRegister();
@@ -20,11 +21,31 @@ export function SignUpForm() {
   const onSubmit = (data) => {
     signup(data, {
       onError: (err) => {
-        console.error("Signup failed:", err);
-        // show toast / error message
+        console.log(err);
+        toast.error("Signup failed", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       },
       onSuccess: (user) => {
-        console.log("Signup success:", user);
+        toast.success("Signup successful", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
         setShowAuthContainer(false);
         // redirect
       },
@@ -74,7 +95,7 @@ export function SignUpForm() {
         disabled={isPending}
         className="w-full py-2 rounded-lg bg-highlight font-heading tracking-wide hover:opacity-90 transition"
       >
-        {isPending ? "Loading..." : "Sign Up"}
+        {isPending ? <BeatLoader color="white" /> : "Sign Up"}
       </button>
 
       {error && (

@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../../lib/validation/authSchemas";
 import { useLogin } from "../../hooks/useAuth";
 import { useAuthContext } from "../../context/AuthContext";
+import { BeatLoader } from "react-spinners";
+import { Bounce, toast } from "react-toastify";
 
 export function LoginForm() {
   const { mutate: login, isPending, error } = useLogin();
@@ -20,11 +22,31 @@ export function LoginForm() {
   const onSubmit = (data) => {
     login(data, {
       onError: (err) => {
-        console.error("Login failed:", err);
-        // show toast / error message
+        console.log(err);
+        toast.error("Login failed", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       },
       onSuccess: (user) => {
-        console.log("Login success:", user);
+        toast.success("Login successful", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
         setShowAuthContainer(false);
         // redirect to admin if user is admin
       },
@@ -63,7 +85,7 @@ export function LoginForm() {
         disabled={isPending}
         className="w-full py-2 rounded-lg bg-highlight font-heading tracking-wide hover:opacity-90 transition"
       >
-        {isPending ? "Logging in..." : "Login"}
+        {isPending ? <BeatLoader color="white" /> : "Login"}
       </button>
 
       {error && (

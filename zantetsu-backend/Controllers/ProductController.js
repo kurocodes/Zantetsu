@@ -46,7 +46,7 @@ export const getProducts = asyncHandler(async (req, res) => {
     .limit(productsPerPage)
     .select("_id name images discountedPrice price");
 
-  if (!products || products.length === 0) {
+  if (!products) {
     return res.status(404).json({ message: "No products found" });
   }
 
@@ -89,7 +89,6 @@ export const getHomeProducts = asyncHandler(async (req, res) => {
     popular,
   });
 });
-
 
 // @desc Fetch product details
 // @route GET /api/products/:productId
