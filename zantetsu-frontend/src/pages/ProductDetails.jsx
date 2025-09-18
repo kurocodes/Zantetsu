@@ -9,22 +9,27 @@ import CategoryBadge from "../components/Products/CategoryBadge";
 import { useProductDetails } from "../hooks/useProducts";
 import { MoonLoader } from "react-spinners";
 import { InfoMessage } from "../components/Common/InfoMessage";
+import { useCartContext } from "../context/CartContext";
 
 export default function ProductDetails() {
   const { id } = useParams();
   const { data, isLoading, isError } = useProductDetails(id);
+  const { addToCart } = useCartContext();
 
   const product = data?.product;
   const similarProducts = data?.similarProducts;
 
   const [mainImg, setMainImg] = useState();
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [qty, setQty] = useState(1);
+
+  const increaseQty = () => setQty((prev) => prev + 1);
+  const decreaseQty = () => setQty((prev) => (prev > 1 ? prev - 1 : 1));
 
   useEffect(() => {
     if (product?.images?.length > 0) {
       setMainImg(product.images[0]);
     }
-    console.log(product, similarProducts);
   }, [product]);
 
   if (isLoading)
@@ -50,7 +55,14 @@ export default function ProductDetails() {
         </button>
       </InfoMessage>
     );
-  if (!product) return <InfoMessage icon="🔍" title="Product Not Found" description="We couldn’t find any product matching this ID"></InfoMessage>;
+  if (!product)
+    return (
+      <InfoMessage
+        icon="🔍"
+        title="Product Not Found"
+        description="We couldn’t find any product matching this ID"
+      ></InfoMessage>
+    );
 
   return (
     <div className="border-b border-bgMuted pb-16">
@@ -107,7 +119,11 @@ export default function ProductDetails() {
               />
 
               {/* Quantity Selector */}
-              <QuantitySelector />
+              <QuantitySelector
+                qty={qty}
+                increase={increaseQty}
+                decrease={decreaseQty}
+              />
 
               {/* Actions */}
               <div className="flex max-xs:flex-col gap-4 mt-3">
@@ -115,6 +131,15 @@ export default function ProductDetails() {
                   className="flex-1 flex gap-2 justify-center items-center bg-highlight text-white py-2 rounded-lg transition"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() =>
+                    addToCart({
+                      id: product._id,
+                      title: product.name,
+                      discountedPrice: product.discountedPrice,
+                      images: product.images,
+                      qty,
+                    })
+                  }
                 >
                   <icons.LuShoppingCart className="text-xl" />
                   <span>Add to Cart</span>

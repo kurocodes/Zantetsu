@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { icons } from "../../assets/assets";
 import { useGeneralContext } from "../../context/GeneralContext";
+import { useCartContext } from "../../context/CartContext";
 
 export default function ProductCard({
   id,
@@ -9,8 +10,8 @@ export default function ProductCard({
   discountedPrice,
   price,
 }) {
+  const { addToCart } = useCartContext();
   const [imgIdx, setImgIdx] = useState(0);
-
   const { navigate } = useGeneralContext();
 
   return (
@@ -45,7 +46,10 @@ export default function ProductCard({
 
       {/* Product details */}
       <div className="bg-white p-3">
-        <h3 className="text-sm sm:text-lg sm:font-semibold text-gray-800 truncate hover:text-highlight transition-colors duration-200" onClick={() => navigate(`/products/${id}`)}>
+        <h3
+          className="text-sm sm:text-lg sm:font-semibold text-gray-800 truncate hover:text-highlight transition-colors duration-200"
+          onClick={() => navigate(`/products/${id}`)}
+        >
           {title}
         </h3>
         <div className="flex gap-2">
@@ -58,7 +62,10 @@ export default function ProductCard({
           <button className="flex gap-2 items-center bg-bgMuted text-bgLight max-sm:text-sm rounded-lg p-[9px] sm:p-[10px] cursor-pointer hover:bg-highlight transition-colors duration-300">
             <icons.FaRegEye />
           </button>
-          <button className="flex-1 bg-highlight text-white max-sm:text-sm py-1.5 rounded-lg cursor-pointer hover:bg-accentGold hover:text-bgMuted transition">
+          <button
+            className="flex-1 bg-highlight text-white max-sm:text-sm py-1.5 rounded-lg cursor-pointer hover:bg-accentGold hover:text-bgMuted transition"
+            onClick={() => addToCart({ id, title, discountedPrice, images })}
+          >
             Add to Cart
           </button>
         </div>

@@ -8,9 +8,11 @@ import { useEffect } from "react";
 import Sidebar from "./Sidebar";
 import { useAuthContext } from "../../context/AuthContext";
 import { ToastContainer } from "react-toastify";
+import { useCartContext } from "../../context/CartContext";
 
 export default function MainLayout({ children }) {
-  const { showCart, showSidebar } = useGeneralContext();
+  const { showSidebar } = useGeneralContext();
+  const { showCart } = useCartContext();
   const { showAuthContainer } = useAuthContext();
 
   useEffect(() => {

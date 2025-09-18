@@ -6,12 +6,14 @@ import { NavItem } from "./NavItem";
 import { useAuthContext } from "../../context/AuthContext";
 import { useLogout } from "../../hooks/useAuth";
 import { Bounce, toast } from "react-toastify";
+import { useCartContext } from "../../context/CartContext";
 
 export default function Navbar() {
   const { showAuthContainer, setShowAuthContainer, user } = useAuthContext();
-  const { mutate: logout, isLoading, isError } = useLogout();
-  const { navigate, setShowCart, showSidebar, setShowSidebar } =
+  const { mutate: logout } = useLogout();
+  const { navigate, showSidebar, setShowSidebar } =
     useGeneralContext();
+  const { setShowCart } = useCartContext();
 
   return (
     <div className="sticky top-0 z-1 flex items-center max-sm:justify-between bg-bgLight px-4 shadow">
