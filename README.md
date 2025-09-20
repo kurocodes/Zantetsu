@@ -20,5 +20,3 @@ It features advanced filtering (by Category, Anime, Price), real-time URL syncin
 🚀 Dive in, explore your favorite anime merch, and experience the simplicity of Zantetsu Store!
 
 👉 Feel free to ⭐ the repo if you like it!
-
----
