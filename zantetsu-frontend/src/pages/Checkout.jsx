@@ -5,9 +5,17 @@ import { SiGooglepay } from "react-icons/si";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { checkoutSchema } from "../lib/validation/checkoutSchema";
+import { useAuthContext } from "../context/AuthContext";
+import { toast } from "react-toastify";
+import { usePlaceOrder } from "../hooks/useOrders";
+import { useGeneralContext } from "../context/GeneralContext";
+import { BeatLoader } from "react-spinners";
 
 export default function Checkout() {
   const { cart } = useCartContext();
+  const { user, setShowAuthContainer } = useAuthContext();
+  const { mutate: placeOrder, isPending, isError } = usePlaceOrder();
+  const { navigate } = useGeneralContext();
 
   const {
     register,
@@ -34,22 +42,61 @@ export default function Checkout() {
   const total = subtotal + shipping;
 
   const onSubmit = (data) => {
-    console.log("Validated Order Data: ", data, cart);
-    alert("Your order has been placed");
+    if (!user) {
+      setShowAuthContainer(true);
+      toast.warning("Please login to place your order", {
+        position: "bottom-right",
+      });
+      return;
+    }
+
+    const products = cart.map((item) => ({
+      product: item.id,
+      quantity: item.qty,
+      price: item.discountedPrice,
+    }));
+
+    const orderData = {
+      products,
+      totalAmount: subtotal,
+      shippingAddress: {
+        fullName: data.name,
+        email: data.email,
+        address: data.address,
+        city: data.city,
+        postalCode: data.postalCode,
+      },
+      paymentMethod: data.payment.toUpperCase(),
+    };
+
+    placeOrder(orderData, {
+      onSuccess: (order) => {
+        sessionStorage.setItem("lastOrderId", order._id);
+        navigate(`/order-confirmation/${order._id}`);
+      },
+      onError: (err) => {
+        console.error(err);
+        toast.error("Something went wrong placing your order", {
+          position: "bottom-right",
+        });
+      },
+    });
   };
 
   return (
     <div className="min-h-screen bg-bgSoft text-bgLight font-body p-6">
       <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
         {/* Left: Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="px-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="xs:px-6">
           <h1 className="font-heading text-3xl mb-4">Checkout</h1>
           <div className="space-y-6">
             {/* Name */}
             <div>
               <FloatingInput label="Full Name" {...register("name")} />
               {errors.name && (
-                <p className="text-red-400 text-xs ps-2 mt-1">{errors.name.message}</p>
+                <p className="text-red-400 text-xs ps-2 mt-1">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
@@ -61,7 +108,9 @@ export default function Checkout() {
                 {...register("email")}
               />
               {errors.email && (
-                <p className="text-red-400 text-xs ps-2 mt-1">{errors.name.message}</p>
+                <p className="text-red-400 text-xs ps-2 mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -74,7 +123,9 @@ export default function Checkout() {
                 {...register("address")}
               />
               {errors.address && (
-                <p className="text-red-400 text-xs ps-2 mt-1">{errors.address.message}</p>
+                <p className="text-red-400 text-xs ps-2 mt-1">
+                  {errors.address.message}
+                </p>
               )}
             </div>
 
@@ -83,7 +134,9 @@ export default function Checkout() {
               <div>
                 <FloatingInput label="City" {...register("city")} />
                 {errors.city && (
-                  <p className="text-red-400 text-xs ps-2 mt-1">{errors.city.message}</p>
+                  <p className="text-red-400 text-xs ps-2 mt-1">
+                    {errors.city.message}
+                  </p>
                 )}
               </div>
               <div>
@@ -146,12 +199,12 @@ export default function Checkout() {
             type="submit"
             className="w-full bg-highlight text-white py-3 mt-4 rounded-lg font-medium hover:bg-accentGold hover:text-bgDark transition"
           >
-            Place Order
+            {isPending ? <BeatLoader color="white" /> : "Place Order"}
           </button>
         </form>
 
         {/* Right: Order Summary */}
-        <div className="p-6 h-fit sticky top-6">
+        <div className="xs:p-6 h-fit sticky top-6">
           <h2 className="font-heading text-xl mb-4">Order Summary</h2>
 
           <div className="space-y-4 max-h-64 overflow-y-auto pr-2 hide-scrollbar">

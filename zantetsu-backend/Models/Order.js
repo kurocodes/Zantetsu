@@ -28,12 +28,17 @@ const OrderSchema = mongoose.Schema(
       min: 0,
     },
     shippingAddress: {
-      fullName: String,
-      phone: String,
-      address: String,
-      city: String,
-      postalCode: String,
-      country: String,
+      fullName: { type: String, required: true },
+      email: { type: String, required: true },
+      address: { type: String, required: true },
+      city: { type: String, required: true },
+      postalCode: { type: String, required: true },
+      country: { type: String, default: "India" },
+    },
+    paymentMethod: {
+      type: String,
+      enum: ["COD", "CARD", "UPI"],
+      default: "COD",
     },
     status: {
       type: String,

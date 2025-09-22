@@ -14,7 +14,7 @@ export default function CartItem({ product }) {
         </div>
       </div>
       <div className="space-y-1">
-        <h3 className="font-body text-lg font-bold">{product.title}</h3>
+        <h3 className="font-body text-base xs:text-lg font-bold">{product.title}</h3>
         <div className="flex justify-between items-center">
           <PriceTag discountedPrice={product.discountedPrice} small />
           <div className="flex gap-2">

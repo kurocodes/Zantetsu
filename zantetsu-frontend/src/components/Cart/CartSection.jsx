@@ -16,7 +16,7 @@ export default function CartSection() {
   return (
     <motion.div className="fixed top-0 right-0 z-10 bg-bgSoft/40 w-screen h-screen text-bgLight">
       <motion.div
-        className="absolute right-0 w-100 h-full bg-bgSoft overflow-y-auto hide-scrollbar"
+        className="absolute right-0 w-full xs:w-100 h-full bg-bgSoft overflow-y-auto hide-scrollbar"
         initial={{ x: 100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         exit={{ x: 100, opacity: 0 }}
@@ -50,7 +50,7 @@ export default function CartSection() {
         </div>
 
         {cart.length > 0 && (
-          <div className="sticky bottom-0 px-8 py-4 bg-bgMuted space-y-2">
+          <div className="absolute w-full bottom-0 px-8 py-4 bg-bgMuted space-y-2">
             <div className="flex justify-between text-lg font-medium">
               <span>Subtotal</span>
               <span>$ {subtotal.toFixed(2)}</span>
@@ -58,6 +58,7 @@ export default function CartSection() {
             <button
               className="w-full bg-highlight text-bgLight py-2 rounded font-medium cursor-pointer hover:text-bgDark hover:bg-accentGold transition-colors duration-200"
               onClick={() => {
+                if (cart.length === 0) return;
                 setShowCart(false);
                 navigate("/checkout");
               }}
