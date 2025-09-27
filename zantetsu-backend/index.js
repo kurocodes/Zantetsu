@@ -1,5 +1,7 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectTODB from "./config/db.js";
@@ -10,7 +12,6 @@ import orderRoutes from "./Routes/OrderRoutes.js";
 import paymentRoutes from "./Routes/paymentRoutes.js";
 import { errorHandler } from "./Middlewares/errorMiddleware.js";
 
-dotenv.config();
 connectTODB();
 
 const app = express();

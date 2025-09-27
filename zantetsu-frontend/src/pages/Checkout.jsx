@@ -10,12 +10,17 @@ import { toast } from "react-toastify";
 import { usePlaceOrder } from "../hooks/useOrders";
 import { useGeneralContext } from "../context/GeneralContext";
 import { BeatLoader } from "react-spinners";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { useCreatePaymentIntent } from "../hooks/usePayments";
 
 export default function Checkout() {
   const { cart } = useCartContext();
   const { user, setShowAuthContainer } = useAuthContext();
   const { mutate: placeOrder, isPending, isError } = usePlaceOrder();
+  const { mutateAsync: createPaymentIntent } = useCreatePaymentIntent();
   const { navigate } = useGeneralContext();
+  const stripe = useStripe();
+  const elements = useElements();
 
   const {
     register,
@@ -41,7 +46,25 @@ export default function Checkout() {
   const shipping = subtotal > 0 ? 5.99 : 0; // flat shipping example
   const total = subtotal + shipping;
 
-  const onSubmit = (data) => {
+  const makeOrderData = (formData, method = "COD", status = "PENDING") => ({
+    products: cart.map((item) => ({
+      product: item.id,
+      quantity: item.qty,
+      price: item.discountedPrice,
+    })),
+    totalAmount: subtotal,
+    shippingAddress: {
+      fullName: formData.name,
+      email: formData.email,
+      address: formData.address,
+      city: formData.city,
+      postalCode: formData.postalCode,
+    },
+    paymentMethod: method,
+    paymentStatus: status,
+  });
+
+  const onSubmit = async (data) => {
     if (!user) {
       setShowAuthContainer(true);
       toast.warning("Please login to place your order", {
@@ -50,37 +73,57 @@ export default function Checkout() {
       return;
     }
 
-    const products = cart.map((item) => ({
-      product: item.id,
-      quantity: item.qty,
-      price: item.discountedPrice,
-    }));
+    if (data.payment === "cod") {
+      placeOrder(makeOrderData(data), {
+        onSuccess: (order) => {
+          sessionStorage.setItem("lastOrderId", order._id);
+          navigate(`/order-confirmation/${order._id}`);
+        },
+        onError: (err) => {
+          console.error(err);
+          toast.error("Something went wrong placing your order", {
+            position: "bottom-right",
+          });
+        },
+      });
+      return;
+    }
 
-    const orderData = {
-      products,
-      totalAmount: subtotal,
-      shippingAddress: {
-        fullName: data.name,
-        email: data.email,
-        address: data.address,
-        city: data.city,
-        postalCode: data.postalCode,
-      },
-      paymentMethod: data.payment.toUpperCase(),
-    };
-
-    placeOrder(orderData, {
-      onSuccess: (order) => {
-        sessionStorage.setItem("lastOrderId", order._id);
-        navigate(`/order-confirmation/${order._id}`);
-      },
-      onError: (err) => {
-        console.error(err);
-        toast.error("Something went wrong placing your order", {
-          position: "bottom-right",
+    if (data.payment === "card") {
+      try {
+        // 1. Create intent from backend
+        const { data: intentRes } = await createPaymentIntent({
+          amount: total,
+          currency: "usd",
         });
-      },
-    });
+
+        // 2. Confirm payment with stripe.js
+        const result = await stripe.confirmCardPayment(intentRes.clientSecret, {
+          payment_method: {
+            card: elements.getElement(CardElement),
+          },
+        });
+
+        if (result.error) {
+          console.error("Payment error:", result.error.message);
+          navigate("/payment-failed"); // custom fail page
+          return;
+        }
+
+        if (result.paymentIntent.status === "succeeded") {
+          // 3. Place order
+          placeOrder(makeOrderData(data, "CARD", "PAID"), {
+            onSuccess: (order) => {
+              sessionStorage.setItem("lastOrderId", order._id);
+              navigate(`/order-confirmation/${order._id}`);
+            },
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        navigate("/payment-failed");
+      }
+    }
   };
 
   return (
@@ -193,6 +236,8 @@ export default function Checkout() {
               </div>
             </div>
           </div>
+
+          <CardElement className="p-3 border rounded bg-bgMuted" />
 
           {/* Submit */}
           <button

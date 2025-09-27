@@ -5,7 +5,13 @@ import asyncHandler from "express-async-handler";
 // @route POST /api/orders/place
 // @access Private (requires cookie JWT)
 export const placeOrder = asyncHandler(async (req, res) => {
-  const { products, totalAmount, shippingAddress, paymentMethod } = req.body;
+  const {
+    products,
+    totalAmount,
+    shippingAddress,
+    paymentMethod,
+    paymentStatus,
+  } = req.body;
 
   if (!products || products.length === 0) {
     return res.status(400).json({ message: "No products in order" });
@@ -17,6 +23,7 @@ export const placeOrder = asyncHandler(async (req, res) => {
     totalAmount,
     shippingAddress,
     paymentMethod,
+    paymentStatus,
   });
 
   const createdOrder = await order.save();

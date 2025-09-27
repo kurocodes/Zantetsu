@@ -6,8 +6,8 @@ import ReturnPolicy from "./pages/ReturnPolicy";
 import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import ScrollToTop from "./components/Layouts/ScrollToTop";
-import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
+import CheckoutPage from "./pages/CheckoutPage";
 
 export default function App() {
   return (
@@ -20,7 +20,7 @@ export default function App() {
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/about" element={<About />} />
         <Route path="/return-and-refund" element={<ReturnPolicy />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/order-confirmation/:id" element={<OrderConfirmation />} />
       </Routes>
     </MainLayout>
