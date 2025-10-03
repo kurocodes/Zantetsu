@@ -14,7 +14,7 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useCreatePaymentIntent } from "../hooks/usePayments";
 
 export default function Checkout() {
-  const { cart } = useCartContext();
+  const { cart, clearCart } = useCartContext();
   const { user, setShowAuthContainer } = useAuthContext();
   const { mutate: placeOrder, isPending, isError } = usePlaceOrder();
   const { mutateAsync: createPaymentIntent } = useCreatePaymentIntent();
@@ -26,6 +26,7 @@ export default function Checkout() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
@@ -37,6 +38,8 @@ export default function Checkout() {
       payment: "cod",
     },
   });
+
+  const selectedPayment = watch("payment");
 
   const subtotal = cart.reduce(
     (acc, item) => acc + item.discountedPrice * item.qty,
@@ -78,6 +81,7 @@ export default function Checkout() {
         onSuccess: (order) => {
           sessionStorage.setItem("lastOrderId", order._id);
           navigate(`/order-confirmation/${order._id}`);
+          clearCart();
         },
         onError: (err) => {
           console.error(err);
@@ -116,6 +120,13 @@ export default function Checkout() {
             onSuccess: (order) => {
               sessionStorage.setItem("lastOrderId", order._id);
               navigate(`/order-confirmation/${order._id}`);
+              clearCart();
+            },
+            onError: (err) => {
+              console.error(err);
+              toast.error("Something went wrong placing your order", {
+                position: "bottom-right",
+              });
             },
           });
         }
@@ -237,7 +248,7 @@ export default function Checkout() {
             </div>
           </div>
 
-          <CardElement className="p-3 border rounded bg-bgMuted" />
+          {selectedPayment === "card" && <CardElement className="p-3 border-2 border-bgMuted rounded-lg mt-2 outline-none" />}
 
           {/* Submit */}
           <button

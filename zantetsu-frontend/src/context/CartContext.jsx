@@ -72,6 +72,8 @@ export const CartProvider = ({ children }) => {
     updateStorage(updatedCart);
   };
 
+  const clearCart = () => updateStorage([]);
+
   return (
     <CartContext.Provider
       value={{
@@ -82,6 +84,7 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         increaseQty,
         decreaseQty,
+        clearCart,
       }}
     >
       {children}
