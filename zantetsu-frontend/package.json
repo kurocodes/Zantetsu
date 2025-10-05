@@ -26,6 +26,7 @@
     "react-spinners": "^0.17.0",
     "react-toastify": "^11.0.5",
     "tailwindcss": "^4.1.12",
+    "victory": "^37.3.6",
     "zod": "^4.1.8"
   },
   "devDependencies": {

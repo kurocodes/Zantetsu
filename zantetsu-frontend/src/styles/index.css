@@ -59,12 +59,18 @@
 
 /* === Design Tokens (CSS Variables) === */
 :root {
-  --color-bg-light: #ffffff;
-  --color-bg-dark: #111111;
-  --color-highlight: #d72638;
-  --color-bg-soft: #1c1c1c;
-  --color-bg-muted: #2c2c2c;
-  --color-accent-gold: #ffd700;
+  --color-bg-light: hsl(0, 0%, 100%);
+  --color-bg-dark: hsl(0, 0%, 7%);
+  --color-highlight: hsl(354, 70%, 50%);
+  --color-bg-soft: hsl(0, 0%, 11%);
+  --color-bg-muted: hsl(0, 0%, 17%);
+  --color-accent-gold: hsl(51, 100%, 50%);
+
+  /* --poppy: hsla(354, 70%, 50%, 1);
+  --indian-red: hsla(354, 70%, 60%, 1);
+  --light-coral: hsla(354, 70%, 70%, 1);
+  --cherry-blossom-pink: hsla(354, 70%, 80%, 1);
+  --mimi-pink: hsla(355, 70%, 90%, 1); */
 
   --font-heading: "Russo One", sans-serif;
   --font-subheading: "Exo 2", sans-serif;

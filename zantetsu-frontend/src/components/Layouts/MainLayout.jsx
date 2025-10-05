@@ -9,6 +9,7 @@ import Sidebar from "./Sidebar";
 import { useAuthContext } from "../../context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import { useCartContext } from "../../context/CartContext";
+import { Outlet } from "react-router-dom";
 
 export default function MainLayout({ children }) {
   const { showSidebar } = useGeneralContext();
@@ -26,7 +27,7 @@ export default function MainLayout({ children }) {
   return (
     <div className="relative">
       <Navbar />
-      {children}
+      <Outlet />
       <Footer />
       {showAuthContainer && <AuthContainer />}
       <AnimatePresence>
