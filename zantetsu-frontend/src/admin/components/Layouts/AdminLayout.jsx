@@ -4,11 +4,9 @@ import Navbar from "./Navbar";
 
 export default function AdminLayout() {
   return (
-    <div>
-      <aside>
-        <Sidebar />
-      </aside>
-      <main>
+    <div className="flex h-screen">
+      <Sidebar />
+      <main className="px-6 py-4 grow h-full overflow-y-auto">
         <Navbar />
         <Outlet />
       </main>
