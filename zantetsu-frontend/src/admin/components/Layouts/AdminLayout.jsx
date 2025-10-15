@@ -6,7 +6,7 @@ export default function AdminLayout() {
   return (
     <div className="flex h-screen">
       <Sidebar />
-      <main className="px-6 py-4 grow h-full overflow-y-auto">
+      <main className="px-6 py-4 grow h-full overflow-y-auto space-y-4">
         <Navbar />
         <Outlet />
       </main>

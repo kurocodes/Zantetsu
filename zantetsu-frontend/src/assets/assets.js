@@ -8,7 +8,7 @@ import chibi_action_figure_category_image from "./Images/chibi-action-figure.web
 import posters_catergory_image from "./Images/posters.webp";
 import katanas_catergory_image from "./Images/katanas.webp";
 
-import { LuShoppingCart } from "react-icons/lu";
+import { LuShoppingCart, LuCircleUserRound } from "react-icons/lu";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { IoSearch, IoClose } from "react-icons/io5";
 import {
@@ -32,9 +32,10 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { MdSupportAgent, MdEmail, MdPhone, MdDelete, MdOutlineDashboard } from "react-icons/md";
-import { BsBoxSeam } from "react-icons/bs";
+import { BsBoxSeam, BsThreeDots } from "react-icons/bs";
 import { AiOutlineMessage } from "react-icons/ai";
 import { VscBell } from "react-icons/vsc";
+import { PiCurrencyCircleDollar } from "react-icons/pi";
 
 import FilterIcon from "./icons/FilterIcon";
 
@@ -78,6 +79,9 @@ export const icons = {
   IoSettingsOutline,
   AiOutlineMessage,
   VscBell,
+  PiCurrencyCircleDollar,
+  LuCircleUserRound,
+  BsThreeDots,
 };
 
 export const catergoryImages = {
