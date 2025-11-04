@@ -6,7 +6,7 @@ export default function ConversionRate() {
   const maxValue = Math.max(...data.map((d) => d.value));
 
   return (
-    <div className="bg-[hsl(0,0%,13%)] rounded-md shadow-sm h-full p-4 flex flex-col justify-between">
+    <div className="bg-[hsl(0,0%,13%)] rounded-md shadow-sm h-full p-4 flex flex-col max-sm:gap-4 justify-between">
       <div className="flex items-center justify-between">
         <h2 className="text-lg text-bgLight/90">Conversion Rate</h2>
         <button className="flex items-center gap-1 bg-[hsl(0,0%,23%)] hover:bg-[hsl(0,0%,33%)] text-bgLight/70 text-xs px-2.5 py-1 rounded cursor-pointer">
@@ -24,10 +24,10 @@ export default function ConversionRate() {
             }`}
           >
             <div className={`flex flex-col ${index !== 0 ? "pl-2" : ""}`}>
-              <span className="text-bgLight/50 text-[10px] mb-2">
+              <span className="text-bgLight/50 text-[8px] xs:text-[10px] mb-2">
                 {item.name}
               </span>
-              <span className="text-xl text-bgLight font-medium mb-1">
+              <span className="text-sm xs:text-xl text-bgLight font-medium mb-1">
                 {item.value.toLocaleString()}
               </span>
               <span

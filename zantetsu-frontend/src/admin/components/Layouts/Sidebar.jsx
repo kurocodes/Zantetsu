@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { assets, icons } from "../../../assets/assets";
+import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 
 const pages = [
   {
@@ -19,13 +21,21 @@ const pages = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
+  const [isShrinked, setIsShrinked] = useState(false);
+
   return (
-    <aside className="min-w-[200px] shrink bg-[hsl(0,0%,13%)] px-4 font-body">
+    <motion.aside
+      animate={{ width: isShrinked ? 80 : 200 }}
+      transition={{ type: "spring", stiffness: 200, damping: 25 }}
+      className={`absolute z-10 lg:relative shrink bg-[hsl(0,0%,13%)] shadow-[0_0_10px_0_rgba(0,0,0,0.1)] px-3 py-6 font-body h-full flex flex-col justify-between transition-transform duration-200
+        ${isSidebarOpen ? "translate-x-0" : "max-lg:-translate-x-full"}
+        `}
+    >
       {/* Logo */}
-      <div className="w-32 mx-auto">
+      {/* <div className="w-32 mx-auto">
         <img src={assets.zantetsu_logo_light} alt="Zantetsu Logo" />
-      </div>
+      </div> */}
 
       {/* Pages */}
       <div className="space-y-1">
@@ -35,34 +45,65 @@ export default function Sidebar() {
               to={page.route}
               key={page.name}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2.5 rounded-md text-sm ${
+                `flex items-center rounded-md text-sm px-4 py-2.5 transition-colors ${
                   isActive ? "bg-highlight text-bgLight" : "text-bgLight/70"
                 }`
               }
             >
-              <page.icon className="text-xl" />
-              <span>{page.name}</span>
+              <page.icon className="text-xl shrink-0" />
+              <motion.div
+                animate={{
+                  width: isShrinked ? 0 : "auto",
+                  opacity: isShrinked ? 0 : 1,
+                  marginLeft: isShrinked ? 0 : 12,
+                }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="overflow-hidden whitespace-nowrap"
+              >
+                {page.name}
+              </motion.div>
             </NavLink>
           );
         })}
       </div>
 
-      {/* Dummy Content */}
+      {/* Dummy Links */}
       <div className="space-y-1 border-t border-bgMuted pt-4 mt-4">
-        <div className="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm text-bgLight/70">
-          <icons.IoIosLink className="text-xl" />
-          <span>Integrations</span>
-        </div>
-        <div className="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm text-bgLight/70">
-          <icons.IoIosHelpCircleOutline className="text-xl" />
-          <span>Help</span>
-        </div>
-        <div className="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm text-bgLight/70">
-          <icons.IoSettingsOutline className="text-xl" />
-          <span>Settings</span>
-        </div>
+        {[
+          { name: "Integrations", icon: icons.IoIosLink },
+          { name: "Help", icon: icons.IoIosHelpCircleOutline },
+          { name: "Settings", icon: icons.IoSettingsOutline },
+        ].map((item) => (
+          <div
+            key={item.name}
+            className={`flex items-center rounded-md text-sm text-bgLight/70 px-4 py-2.5 `}
+          >
+            <item.icon className="text-xl shrink-0" />
+            <motion.div
+              animate={{
+                width: isShrinked ? 0 : "auto",
+                opacity: isShrinked ? 0 : 1,
+                marginLeft: isShrinked ? 0 : 12,
+              }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+              className="overflow-hidden whitespace-nowrap"
+            >
+              {item.name}
+            </motion.div>
+          </div>
+        ))}
       </div>
-      <div></div>
-    </aside>
+      {/* <div></div> */}
+
+      {/* Shrink Button */}
+      <button
+        className={`max-lg:hidden absolute bottom-5 right-0 translate-x-1/2 text-xl text-bgLight bg-highlight p-1.5 rounded-full cursor-pointer transition-transform duration-300 ${
+          isShrinked ? "" : "rotate-180"
+        }`}
+        onClick={() => setIsShrinked(!isShrinked)}
+      >
+        <icons.IoIosArrowForward />
+      </button>
+    </motion.aside>
   );
 }

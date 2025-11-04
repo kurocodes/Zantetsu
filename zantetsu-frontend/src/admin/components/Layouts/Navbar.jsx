@@ -1,14 +1,16 @@
 import { adminAssets, icons } from "../../../assets/assets";
 
-export default function Navbar() {
+export default function Navbar({ isSidebarOpen, setIsSidebarOpen }) {
   return (
     <div className="flex justify-between items-center font-body">
-      {/* Page heading */}
-      <h1 className="text-2xl text-bgLight font-medium">Dashboard</h1>
+        {/* Page heading */}
+      <div className="flex items-center gap-4">
+        <h1 className="text-2xl text-bgLight font-medium">Dashboard</h1>
+      </div>
 
       {/* Search bar */}
       <div className="flex items-center gap-4">
-        <div className="bg-[hsl(0,0%,13%)] rounded-md flex items-center">
+        <div className="max-sm:hidden bg-[hsl(0,0%,13%)] rounded-md flex items-center">
           <input
             type="text"
             placeholder="Search stock, order, etc."
@@ -20,7 +22,7 @@ export default function Navbar() {
         </div>
 
         {/* Messages and Notifications */}
-        <div className="flex items-center gap-4">
+        <div className="max-xs:hidden flex items-center gap-4">
           <div>
             <icons.AiOutlineMessage className="text-xl text-bgLight/70 hover:text-bgLight/90 cursor-pointer" />
           </div>
@@ -43,6 +45,10 @@ export default function Navbar() {
           </div>
           <icons.IoIosArrowDown className="text-lg text-bgLight/50 hover:text-bgLight/90 cursor-pointer" />
         </div>
+
+        <button className="lg:hidden" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+          <icons.HiMenuAlt1 className="text-2xl text-bgLight/70 hover:text-bgLight/90 cursor-pointer"/>
+        </button>
       </div>
     </div>
   );

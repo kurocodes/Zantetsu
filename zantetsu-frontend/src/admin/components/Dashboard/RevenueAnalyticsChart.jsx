@@ -41,7 +41,7 @@ export default function RevenueAnalyticsChart() {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <h2 className="text-lg text-bgLight/90">Revenue Analytics</h2>
-          <button className="flex items-center gap-1 bg-[hsl(0,0%,23%)] hover:bg-[hsl(0,0%,33%)] text-bgLight/70 text-xs px-2.5 py-1 rounded cursor-pointer">
+          <button className="max-xs:hidden flex items-center gap-1 bg-[hsl(0,0%,23%)] hover:bg-[hsl(0,0%,33%)] text-bgLight/70 text-xs px-2.5 py-1 rounded cursor-pointer">
             <span className="mt-0.5">Last 8 Days</span>
             <icons.IoIosArrowDown className="mt-0.5" />
           </button>

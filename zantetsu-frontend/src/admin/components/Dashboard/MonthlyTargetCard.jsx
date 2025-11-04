@@ -20,7 +20,7 @@ export default function MonthlyTargetCard() {
   const arcPath = "M 20 100 A 80 80 0 0 1 180 100";
 
   return (
-    <div className="bg-[hsl(0,0%,13%)] rounded-md shadow-sm h-full p-4 flex flex-col justify-between">
+    <div className="bg-[hsl(0,0%,13%)] rounded-md shadow-sm h-full p-4 flex flex-col max-sm:gap-4 justify-between">
       <div className="flex items-center justify-between">
         <h2 className="text-lg text-bgLight/90">Monthly Target</h2>
         <icons.BsThreeDots className="text-bgLight/50" />

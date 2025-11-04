@@ -4,7 +4,7 @@ export default function TopCategories() {
   const total = categoryData.reduce((acc, item) => acc + item.value, 0);
 
   return (
-    <div className="bg-[hsl(0,0%,13%)] rounded-md shadow-sm h-full px-4 pt-4 pb-6 flex flex-col justify-between">
+    <div className="bg-[hsl(0,0%,13%)] rounded-md shadow-sm h-full px-4 pt-4 pb-6 flex flex-col max-sm:gap-4 justify-between">
       <div className="flex items-center justify-between">
         <h2 className="text-lg text-bgLight/90">Top Categories</h2>
         <span className="text-xs font-medium text-bgLight/50">See All</span>

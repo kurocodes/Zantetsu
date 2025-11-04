@@ -1,9 +1,9 @@
-import React from 'react'
+import OrdersTable from '../components/Orders/OrdersTable'
 
 export default function OrdersPage() {
   return (
-    <div>
-      Orders Page
+    <div className='font-body'>
+      <OrdersTable />
     </div>
   )
 }
